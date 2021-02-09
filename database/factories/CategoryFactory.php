@@ -22,7 +22,23 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker-> title,
+            'parent_id' => 0,
+            'title' => $this->faker-> word,
         ];
+    }
+
+    public function childCategory()
+    {
+        return $this->state(function () {
+            $var0 = 0;
+            $ids = Category::pluck('id')->toArray();
+
+            array_unshift($ids, $var0);
+
+            return [
+                'parent_id' => $this->faker
+                    -> randomElement($ids),
+            ];
+        });
     }
 }

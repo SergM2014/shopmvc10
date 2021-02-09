@@ -25,7 +25,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker -> title,
+            'title' => $this->faker -> word,
             'description' => $this->faker -> sentence,
             'manufacturer_id' => $this->faker->randomElement(Manufacturer::pluck('id')->toArray()),
             'category_id' => $this->faker->randomElement(Category::pluck('id')->toArray()),

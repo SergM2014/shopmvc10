@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -13,7 +14,16 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        //
-        \App\Models\Category::factory(50)->create();
+        // these are initial start category
+       \App\Models\Category::factory(5)->create();
+
+       //create first level of subcategories
+       Category::factory()->count(20)->childCategory()->create();
+
+       //create second Level of subcategories
+        Category::factory()->count(20)->childCategory()->create();
+
+        //create third Level of subcategories
+        Category::factory()->count(20)->childCategory()->create();
     }
 }
