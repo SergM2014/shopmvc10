@@ -6,6 +6,7 @@
 
         <title>Laravel</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <script src="{{ asset('js/app.js') }}"></script>
 
 
     <body class="antialiased">
@@ -168,9 +169,9 @@
                     <main>
                         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                             <!-- Replace with your content -->
-
+<!--     categories tree is present here -->
                             <div class="flex">
-                                 @include ('partials.categoriesList')
+                                 @include ('partials.categoriesList', ['counter' => 0])
                             </div>
 
                             <div class="px-4 py-6 sm:px-0">

@@ -8,27 +8,28 @@
 
 ?>
 
-<div class="w-40 border-2 border-red-700 inline-block h-full ">
+<div class="w-40   <?php if ($counter > 0) echo "hidden" ?>" >
 
     @foreach($childIds as $parentId)
-        <div class=" border-2 border-green-700 inline-block w-40 ">
+        <div>
 
-    @foreach($categories as $category)
+            @foreach($categories as $category)
 
-        @if($category->parent_id == $parentId )
+                @if($category->parent_id == $parentId )
 
 
-            <div class="border  rounded-l px-3 py-3 my-1 w-40 break-all">
-                <?=  $category->title .'/'.$category->parent_id .'/'.$category->id ?>
-            </div>
-                    @foreach ($categories as $subCategory)
-                        @if($subCategory->parent_id == $category->id)
-                            <?php  $newChildIds [] = $category->id;  ?>
-                        @endif
-                    @endforeach
+                    <div class="border  rounded-l px-3 py-3 my-1 w-40 break-all">
+                        <?=  $category->title .'/'.$category->parent_id .'/'.$category->id ?>
+                    </div>
+                            @foreach ($categories as $subCategory)
+                                <?php if($subCategory->parent_id == $category->id)  $newChildIds [] = $category->id;  ?>
+                            @endforeach
+
 
                 @endif
+
             @endforeach
+
         </div>
     @endforeach
 
@@ -37,9 +38,9 @@
 
 @if($newChildIds)
 
-    <?php  $childIds = array_unique($newChildIds);  ?>
+    <?php  $childIds = array_unique($newChildIds); $counter++ ?>
 
-    @include('partials.categoriesList', compact('childIds'))
+    @include('partials.categoriesList', compact('childIds', 'counter'))
 
 @endif
 
