@@ -15,7 +15,7 @@ class CategorySeeder extends Seeder
     public function run()
     {
         // these are initial start category
-       \App\Models\Category::factory(5)->create();
+       \App\Models\Category::factory(2)->create();
 
        //create first level of subcategories
        Category::factory()->count(20)->childCategory()->create();
@@ -24,6 +24,9 @@ class CategorySeeder extends Seeder
         Category::factory()->count(20)->childCategory()->create();
 
         //create third Level of subcategories
-        Category::factory()->count(20)->childCategory()->create();
+        Category::factory()->count(30)->childCategory()->create();
+
+        //Create forth level 0f subcategories
+        Category::factory()->count(50)->childCategory()->create();
     }
 }
