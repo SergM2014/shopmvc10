@@ -172,7 +172,7 @@
                         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                             <!-- Replace with your content -->
 <!--     categories tree is present here -->
-                            <div id="tree" class="flex" x-data="tree()" x-on:click.away="closeAll()" x-data="{ minimised:true }" >
+                            <div id="tree" class="flex" x-data="tree()" x-on:click.away="closeAll()" x-on:mouseleave="closeAll()" x-data="{ minimised:true }" >
                                  @include ('partials.categoriesList', ['counter' => 0])
                             </div>
 

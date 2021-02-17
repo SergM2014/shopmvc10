@@ -18,7 +18,7 @@
                 @if($category->parent_id == $parentId)
 
 
-                    <div class="border  rounded-l px-3 py-3 my-1 w-40 break-all" x-on:click="openChild(<?= $counter.','.$category->id  ?>)" >
+                    <div class="border  rounded-l px-3 py-3 my-1 w-40 break-all hover:bg-green-500 cursor-pointer" x-on:mouseover="openChild(<?= $counter.','.$category->id  ?>)" >
                         <?=  $category->title .'/'.$category->parent_id .'/'.$category->id ?>
                     </div>
                             @foreach ($categories as $subCategory)
