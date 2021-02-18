@@ -6,7 +6,7 @@
 
         <title>Laravel</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <script src="{{mix('js/app.js') }}"></script>
+
         <style>
             [x-cloak] { display: none; }
         </style>
@@ -172,9 +172,10 @@
                         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                             <!-- Replace with your content -->
 <!--     categories tree is present here -->
-                            <div id="tree" class="flex" x-data="tree()" x-on:click.away="closeAll()" x-on:mouseleave="closeAll()" x-data="{ minimised:true }" >
+                            <div id="tree" x-ref="tree" class="relative md:flex" x-data="tree()"  x-on:mouseleave="closeAll()" x-data="{ minimised:true }" >
                                  @include ('partials.categoriesList', ['counter' => 0])
                             </div>
+
 
                             <div class="px-4 py-6 sm:px-0">
                                 <div class="border-4 border-dashed border-gray-200 rounded-lg h-96"></div>
@@ -189,7 +190,7 @@
 
 
 
-
+        <script src="{{mix('js/app.js') }}" deffer ></script>
     </body>
 
 </html>

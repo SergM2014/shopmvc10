@@ -16,8 +16,9 @@ window.tree = function()
             this._closeUselessGroups(level,parentId);
 
             let nextLevel = level+1;
-            let myItemParentId = document.querySelector('[data-parent-id = "'+parentId+'"]')
- // if next items level doesnot exsists leave the process
+           // let myItemParentId = document.querySelector('[data-parent-id = "'+parentId+'"]')
+            let myItemParentId = this.$refs.tree.querySelector('[data-parent-id = "'+parentId+'"]')
+ // if next items level doesnot exsists exit the process
             if(!myItemParentId) return;
 
             myItemParentId.classList.remove('hidden');
@@ -28,7 +29,7 @@ window.tree = function()
 
         _closeUselessGroups(level){
 
-                let branches = document.getElementById('tree').querySelectorAll('[data-level]');
+                let branches = this.$refs.tree.querySelectorAll('[data-level]');
 
                 branches.forEach((branch) => {
                     if(branch.dataset.level > level) { branch.classList.add('hidden')}
@@ -39,7 +40,7 @@ window.tree = function()
 // if minimised tree marker then escape
             if(this.minimised === true) return;
 
-            let tree = document.getElementById('tree');
+            let tree = this.$refs.tree;
             let branches = tree.querySelectorAll('[data-level]');
 
             branches.forEach((branch) => {
@@ -53,4 +54,7 @@ window.tree = function()
     }
 }
 
+
+let treeWidth = document.getElementById('tree').clientWidth;
+console.log(treeWidth)
 

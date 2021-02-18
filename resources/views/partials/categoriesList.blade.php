@@ -8,7 +8,7 @@
 
 ?>
 
-<div class="w-40 <?= $counter > 0 ? 'hidden  childrenGroup': ''  ?>" data-level = "<?= $counter ?>" >
+<div class="w-auto md:w-40 <?= $counter > 0 ? 'hidden  childrenGroup': ''  ?> " data-level = "<?= $counter ?>" >
 
     @foreach($childIds as $parentId)
 {{-- in this div the children of one parent are present--}}
@@ -18,7 +18,7 @@
                 @if($category->parent_id == $parentId)
 
 
-                    <div class="border  rounded-l px-3 py-3 my-1 w-40 break-all hover:bg-green-500 cursor-pointer" x-on:mouseover="openChild(<?= $counter.','.$category->id  ?>)" >
+                    <div class="border  rounded-l px-3 py-3 my-1  break-all z-<?= ($counter+1)*50 +50 ?> bg-blue-<?= ($counter+1)*100 +100 ?> hover:bg-green-100 cursor-pointer" x-on:mouseover="openChild(<?= $counter.','.$category->id  ?>)" >
                         <?=  $category->title .'/'.$category->parent_id .'/'.$category->id ?>
                     </div>
                             @foreach ($categories as $subCategory)
