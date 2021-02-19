@@ -8,6 +8,8 @@ window.tree = function()
     return {
 
         minimised : true,
+//the width of working area
+        width : document.getElementById('tree').clientWidth,
 
         openChild(level, parentId){
 //set minimised tree marker to false
@@ -16,12 +18,49 @@ window.tree = function()
             this._closeUselessGroups(level,parentId);
 
             let nextLevel = level+1;
-           // let myItemParentId = document.querySelector('[data-parent-id = "'+parentId+'"]')
-            let myItemParentId = this.$refs.tree.querySelector('[data-parent-id = "'+parentId+'"]')
- // if next items level doesnot exsists exit the process
-            if(!myItemParentId) return;
 
-            myItemParentId.classList.remove('hidden');
+            let myItemsParentIdArr = this.$refs.tree.querySelectorAll('.origin');
+            //let myItemsParentId = myItemsParentIdArr.querySelector('[data-parent-id = "'+parentId+'"]');
+            let myItemsParentId = false;
+            let insertedItem = false;
+             myItemsParentIdArr.forEach( (item) => {
+                     if(item.dataset.parentId == parentId) {
+                     myItemsParentId = item;} });
+
+             let insertedNodesArr = this.$refs.tree.querySelectorAll('.inserted');
+             if(insertedNodesArr) {
+
+                 insertedNodesArr.forEach( (item) => {
+                     if(item.dataset.parentId == parentId) {
+                         insertedItem = item;} });
+                 if (insertedItem) myItemsParentId = insertedItem;
+             }
+
+ // if next items level doesnot exsists exit the process
+            if(!myItemsParentId) return;
+ // if screen is beeg
+           // myItemsParentId.classList.remove('hidden');
+ //if small screen
+            if(this.$refs.tree.clientWidth < 768) {
+//if the item is already inserted
+                if(insertedItem){
+                    insertedItem.classList.remove('hidden');
+                } else {
+                    let clonedItemsParentId = myItemsParentId.cloneNode(true);
+                    let elem = this.$refs.tree.querySelector('[data-id = "' + parentId + '"]');
+                    elem.insertAdjacentElement('afterend', clonedItemsParentId);
+                    clonedItemsParentId.classList.add('inserted');
+                    clonedItemsParentId.classList.remove('origin');
+                    myItemsParentId.innerHTML = '';
+                    myItemsParentId.classList.add('empty');
+                    myItemsParentId.classList.remove('origin')
+                }
+            }
+          //end of small screen
+            else {
+                // if screen is beeg
+                myItemsParentId.classList.remove('hidden');
+            }
 
             let childrenGroup = document.querySelector('[data-level = "'+nextLevel+'"]')
             childrenGroup.classList.remove('hidden');
@@ -49,12 +88,20 @@ window.tree = function()
             })
 // set marker of minimised tree to true
             this.minimised = true;
+        },
+
+         getElementBottom(elem) {
+             let item = elem.getBoundingClientRect();
+
+             let bottom = item.bottom + pageYOffset;
+
+             return bottom;
+
         }
 
     }
 }
 
 
-let treeWidth = document.getElementById('tree').clientWidth;
-console.log(treeWidth)
+
 
