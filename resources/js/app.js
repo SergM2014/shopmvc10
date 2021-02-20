@@ -41,7 +41,8 @@ window.tree = function()
  // if screen is beeg
            // myItemsParentId.classList.remove('hidden');
  //if small screen
-            if(this.$refs.tree.clientWidth < 768) {
+            //if(this.$refs.tree.clientWidth < 768) {
+            if(window.innerWidth < 768) {
 //if the item is already inserted
                 if(insertedItem){
                     insertedItem.classList.remove('hidden');
@@ -90,17 +91,34 @@ window.tree = function()
             this.minimised = true;
         },
 
-         getElementBottom(elem) {
-             let item = elem.getBoundingClientRect();
+        recoverInitialTree(){
+            if(window.innerWidth < 768) return;
 
-             let bottom = item.bottom + pageYOffset;
+            let insertedList = this.$refs.tree.querySelectorAll('.inserted')
 
-             return bottom;
+//exit if nodeList ist empty
+            if(insertedList.length == 0) return;
+
+            let emptedList = this.$refs.tree.querySelectorAll('.empty');
+//move inserted items to origin nodes
+            for (let i = 0 ; i < insertedList.length; i++ )
+            {
+                let innerHtml = insertedList[i].innerHTML;
+
+                emptedList[i].innerHTML = innerHtml;
+                emptedList[i].classList.add('origin');
+                emptedList[i].classList.remove('empty');
+                insertedList[i].remove();
+            }
 
         }
 
+
+
     }
 }
+
+
 
 
 
