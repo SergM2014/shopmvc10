@@ -12,15 +12,19 @@ window.tree = function()
         width : document.getElementById('tree').clientWidth,
 
         openChild(level, parentId){
+
 //set minimised tree marker to false
             this.minimised = false;
 
             this._closeUselessGroups(level,parentId);
 
+            let changedFlowMargin = this._changeWorkFlowToLeft(level);
+//console.log(changedFlowMargin)
+
             let nextLevel = level+1;
 
             let myItemsParentIdArr = this.$refs.tree.querySelectorAll('.origin');
-            //let myItemsParentId = myItemsParentIdArr.querySelector('[data-parent-id = "'+parentId+'"]');
+
             let myItemsParentId = false;
             let insertedItem = false;
              myItemsParentIdArr.forEach( (item) => {
@@ -38,10 +42,9 @@ window.tree = function()
 
  // if next items level doesnot exsists exit the process
             if(!myItemsParentId) return;
- // if screen is beeg
-           // myItemsParentId.classList.remove('hidden');
+
  //if small screen
-            //if(this.$refs.tree.clientWidth < 768) {
+
             if(window.innerWidth < 768) {
 //if the item is already inserted
                 if(insertedItem){
@@ -65,6 +68,11 @@ window.tree = function()
 
             let childrenGroup = document.querySelector('[data-level = "'+nextLevel+'"]')
             childrenGroup.classList.remove('hidden');
+
+            if(changedFlowMargin){
+                childrenGroup.classList.add('absolute', `ml-${changedFlowMargin}`, 'h-full', 'z-10', 'bg-gray-100' );
+
+            }
         },
 
         _closeUselessGroups(level){
@@ -111,9 +119,27 @@ window.tree = function()
                 insertedList[i].remove();
             }
 
+        },
+
+
+// when the next children Groups items leeave parent with area change deirection to reverse
+        _changeWorkFlowToLeft(level)
+        {
+            let currChildGroup = this.$refs.tree.querySelector('[data-level = "' + level + '"]');
+            let curWidth = currChildGroup.offsetLeft + currChildGroup.clientWidth;
+
+            if(curWidth < this.width) return false;
+
+            let margin = currChildGroup.offsetLeft - currChildGroup.clientWidth;
+//tailwind caused counting of rem relative margin, get taiwind measure
+            margin = margin/(this._convertRemToPixels()/4)
+            return margin;
+
+        },
+
+        _convertRemToPixels() {
+            return  parseFloat(getComputedStyle(document.documentElement).fontSize);
         }
-
-
 
     }
 }

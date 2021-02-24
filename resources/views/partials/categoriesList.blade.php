@@ -8,7 +8,7 @@
 
 ?>
 
-<div class="w-auto childrenGroup  <?= $counter > 0 ? 'hidden  ': ''  ?>  md:w-40 " data-level = "<?= $counter ?>" >
+<div class="childrenGroup  <?= $counter > 0 ? 'hidden  ': ''  ?>  md:w-40 " data-level = "<?= $counter ?>" >
 
     @foreach($childIds as $parentId)
 {{-- in this div the children of one parent are present--}}
