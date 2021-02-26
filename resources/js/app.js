@@ -11,15 +11,19 @@ window.tree = function()
 //the width of working area
         width : document.getElementById('tree').clientWidth,
 
-        openChild(level, parentId){
+        openChild(level, parentId, currentElemId){
 
 //set minimised tree marker to false
             this.minimised = false;
+            let actualEl = this.$refs.tree.querySelector('[data-id = "' + currentElemId + '"]');
+            let actualOffsetTop = actualEl.offsetTop;
+            // let actualOffsetHeight = actualEl.offsetHeight
+            let actualOffsetHeight = this.$refs.tree.offsetHeight
 
             this._closeUselessGroups(level,parentId);
 
             let changedFlowMargin = this._changeWorkFlowToLeft(level);
-//console.log(changedFlowMargin)
+
 
             let nextLevel = level+1;
 
@@ -67,7 +71,29 @@ window.tree = function()
             }
 
             let childrenGroup = document.querySelector('[data-level = "'+nextLevel+'"]')
+
+
+            actualOffsetTop = actualOffsetTop-4;
+
+
             childrenGroup.classList.remove('hidden');
+
+            childrenGroup.style.paddingTop = actualOffsetTop+"px";
+
+            if(actualOffsetHeight < childrenGroup.offsetHeight){
+
+              let diff = childrenGroup.offsetHeight - actualOffsetHeight;
+
+              actualOffsetTop = actualOffsetTop - diff;
+
+             if(actualOffsetTop < 0) actualOffsetTop = 0;
+                childrenGroup.style.paddingTop = actualOffsetTop+"px";
+            }
+
+
+
+
+
 
             if(changedFlowMargin){
                 childrenGroup.classList.add('absolute', `ml-${changedFlowMargin}`, 'h-full', 'z-10', 'bg-gray-100' );

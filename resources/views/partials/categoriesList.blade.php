@@ -20,7 +20,7 @@
 
                     <div class="border  rounded-l px-3 py-3 my-1  break-all z-<?= ($counter+1)*50 +50 ?>
                         bg-blue-<?= ($counter+1)*100 +100 ?> hover:bg-green-100 cursor-pointer"
-                         x-on:mouseover="openChild(<?= $counter.','.$category->id  ?>)" data-id="<?= $category->id ?>" >
+                         x-on:mouseover="openChild(<?= $counter.','.$category->id.','.$category->id  ?>)" data-id="<?= $category->id ?>" >
                         <?=  $category->title .'/'.$category->parent_id .'/'.$category->id ?>
                     </div>
                             @foreach ($categories as $subCategory)
