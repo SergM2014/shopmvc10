@@ -8,6 +8,7 @@ window.tree = function()
     return {
 
         minimised : true,
+        flowDirection : 'right',
 //the width of working area
         width : document.getElementById('tree').clientWidth,
 
@@ -17,12 +18,12 @@ window.tree = function()
             this.minimised = false;
             let actualEl = this.$refs.tree.querySelector('[data-id = "' + currentElemId + '"]');
             let actualOffsetTop = actualEl.offsetTop;
-            // let actualOffsetHeight = actualEl.offsetHeight
+
             let actualOffsetHeight = this.$refs.tree.offsetHeight
 
-            this._closeUselessGroups(level,parentId);
+            this._closeUselessGroups(nextLevel,parentId);
 
-            let changedFlowMargin = this._changeWorkFlowToLeft(level);
+
 
 
             let nextLevel = level+1;
@@ -78,6 +79,8 @@ window.tree = function()
 
             childrenGroup.classList.remove('hidden');
 
+            let changedFlowMargin = this._changeWorkFlowToLeft(level,nextLevel);
+
             childrenGroup.style.paddingTop = actualOffsetTop+"px";
 
             if(actualOffsetHeight < childrenGroup.offsetHeight){
@@ -93,11 +96,11 @@ window.tree = function()
 
 
 
+//console.log(changedFlowMargin)
 
-
-            if(changedFlowMargin){
+            if(typeof changedFlowMargin == 'number'){
                 childrenGroup.classList.add('absolute', `ml-${changedFlowMargin}`, 'h-full', 'z-10', 'bg-gray-100' );
-
+//console.log(childrenGroup)
             }
         },
 
@@ -149,16 +152,41 @@ window.tree = function()
 
 
 // when the next children Groups items leeave parent with area change deirection to reverse
-        _changeWorkFlowToLeft(level)
+        _changeWorkFlowToLeft(level,nextLevel)
         {
-            let currChildGroup = this.$refs.tree.querySelector('[data-level = "' + level + '"]');
-            let curWidth = currChildGroup.offsetLeft + currChildGroup.clientWidth;
 
-            if(curWidth < this.width) return false;
+            let parentBlock = this.$refs.tree.querySelector('[data-level = "' +level+ '"]');
+            let nexChildGroup = this.$refs.tree.querySelector('[data-level = "' +nextLevel+ '"]');
+//console.log(nexChildGroup);
+            let curWidth = nexChildGroup.offsetLeft + nexChildGroup.clientWidth;
+// console.log('left=>'+nexChildGroup.offsetLeft)
+// console.log('childWidth=>'+nexChildGroup.clientWidth)
+console.log('currentWidth=>'+curWidth)
+console.log('this.width=>'+this.width)
+            if(this.flowDirection == 'right') {
 
-            let margin = currChildGroup.offsetLeft - currChildGroup.clientWidth;
-//tailwind caused counting of rem relative margin, get taiwind measure
+                if (curWidth <= this.width) return false;
+
+                this.flowDirection = 'left';
+
+
+            }
+
+            if(this.flowDirection == 'left'){
+                if(curWidth < 0 ){
+                    this.flowDirection = 'right';
+                    margin = false;
+                    return margin;
+                }
+            }
+
+
+            let margin = parentBlock.offsetLeft - nexChildGroup.clientWidth;
+            //tailwind caused counting of rem relative margin, get taiwind measure
             margin = margin/(this._convertRemToPixels()/4)
+//console.log('margin=>'+margin)
+
+//should be returned false oder number
             return margin;
 
         },
@@ -169,9 +197,3 @@ window.tree = function()
 
     }
 }
-
-
-
-
-
-

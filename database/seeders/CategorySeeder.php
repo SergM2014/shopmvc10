@@ -28,5 +28,9 @@ class CategorySeeder extends Seeder
 
         //Create forth level 0f subcategories
         Category::factory()->count(50)->childCategory()->create();
+
+        Category::factory()->count(200)->childCategory()->create();
+        //Category::factory()->count(300)->childCategory()->create();
+       // Category::factory()->count(500)->childCategory()->create();
     }
 }
