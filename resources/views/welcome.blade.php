@@ -176,7 +176,15 @@
                                  x-on:mouseleave="closeAll()" x-on:resize.window="recoverInitialTree()"
                                  x-data="{ minimised:true, flowDirection:right }" >
 
-                                      @include ('partials.categoriesList', ['counter' => 0])
+
+
+
+
+
+
+{{--                                @include ('partials.categoriesList', ['counter' => 0 ])--}}
+                                @include ('partials.categoriesListA', ['counter' => 0 ])
+{{--                                @include ('partials.categoriesListG', ['counter' => 0, 'length' => $length ])--}}
 
                             </div>
 
@@ -191,7 +199,11 @@
 
         </div>
 
-
+<?php $time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+echo $time . ' сек.';
+echo "<br>";
+echo memory_get_peak_usage ( true );
+?>
 
 
         <script src="{{mix('js/app.js') }}" deffer ></script>
