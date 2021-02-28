@@ -10,9 +10,6 @@ class IndexController extends Controller
 {
     public function index()
     {
-//in my case toArray is also for Generator
-        $categories = Category::all()->toArray();
-
-        return view('welcome', compact('categories'));
+        return view('welcome');
     }
 }

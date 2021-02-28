@@ -176,15 +176,8 @@
                                  x-on:mouseleave="closeAll()" x-on:resize.window="recoverInitialTree()"
                                  x-data="{ minimised:true, flowDirection:right }" >
 
-
-
-
-
-
-
 {{--                                @include ('partials.categoriesList', ['counter' => 0 ])--}}
-                                @include ('partials.categoriesListA', ['counter' => 0 ])
-{{--                                @include ('partials.categoriesListG', ['counter' => 0, 'length' => $length ])--}}
+                                @include ('partials.categories.treeContainer')
 
                             </div>
 
