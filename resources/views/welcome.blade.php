@@ -174,7 +174,9 @@
 <!--     categories tree is present here -->
                             <div id="tree" x-ref="tree" class="relative md:flex" x-data="tree()"
                                  x-on:mouseleave="closeAll()" x-on:resize.window="recoverInitialTree()"
-                                 x-data="{ minimised:true, flowDirection:right }" >
+                                 x-data="{ minimised:true, flowDirection:right }"
+                                 x-init="estRowsDirection()"
+                            >
 
 {{--                                @include ('partials.categoriesList', ['counter' => 0 ])--}}
                                 @include ('partials.categories.treeContainer')

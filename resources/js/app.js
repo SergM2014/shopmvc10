@@ -9,6 +9,8 @@ window.tree = function()
 
         minimised : true,
         flowDirection : 'right',
+        flowRight : [],
+        flowLeft :[],
 //the width of working area
         width : document.getElementById('tree').clientWidth,
 
@@ -21,10 +23,7 @@ window.tree = function()
 
             let actualOffsetHeight = this.$refs.tree.offsetHeight
 
-            this._closeUselessGroups(nextLevel,parentId);
-
-
-
+            this._closeUselessGroups(level,parentId);
 
             let nextLevel = level+1;
 
@@ -78,8 +77,9 @@ window.tree = function()
 
 
             childrenGroup.classList.remove('hidden');
+            let parentContainer = childrenGroup.closest('.childGroupsContainer');
+            if(parentContainer)parentContainer.classList.remove('hidden')
 
-            let changedFlowMargin = this._changeWorkFlowToLeft(level,nextLevel);
 
             childrenGroup.style.paddingTop = actualOffsetTop+"px";
 
@@ -93,15 +93,9 @@ window.tree = function()
                 childrenGroup.style.paddingTop = actualOffsetTop+"px";
             }
 
-
-
-
-//console.log(changedFlowMargin)
-
-            if(typeof changedFlowMargin == 'number'){
-                childrenGroup.classList.add('absolute', `ml-${changedFlowMargin}`, 'h-full', 'z-10', 'bg-gray-100' );
-//console.log(childrenGroup)
-            }
+            // if(typeof changedFlowMargin == 'number'){
+            //     childrenGroup.classList.add('absolute', `ml-${changedFlowMargin}`, 'h-full', 'z-10', 'bg-gray-100' );
+            // }
         },
 
         _closeUselessGroups(level){
@@ -109,7 +103,7 @@ window.tree = function()
                 let branches = this.$refs.tree.querySelectorAll('[data-level]');
 
                 branches.forEach((branch) => {
-                    if(branch.dataset.level > level) { branch.classList.add('hidden')}
+                    if(branch.dataset.level > level) { branch.classList.add('hidden'); branch.classList.remove('z-10')}
                 })
             },
 
@@ -122,7 +116,8 @@ window.tree = function()
 
             branches.forEach((branch) => {
                 if(branch.dataset.level > 0 )
-                 branch.classList.add('hidden')
+                 branch.classList.add('hidden');
+                branch.classList.remove('z-10')
             })
 // set marker of minimised tree to true
             this.minimised = true;
@@ -152,47 +147,80 @@ window.tree = function()
 
 
 // when the next children Groups items leeave parent with area change deirection to reverse
-        _changeWorkFlowToLeft(level,nextLevel)
-        {
 
-            let parentBlock = this.$refs.tree.querySelector('[data-level = "' +level+ '"]');
-            let nexChildGroup = this.$refs.tree.querySelector('[data-level = "' +nextLevel+ '"]');
-//console.log(nexChildGroup);
-            let curWidth = nexChildGroup.offsetLeft + nexChildGroup.clientWidth;
-// console.log('left=>'+nexChildGroup.offsetLeft)
-// console.log('childWidth=>'+nexChildGroup.clientWidth)
-console.log('currentWidth=>'+curWidth)
-console.log('this.width=>'+this.width)
-            if(this.flowDirection == 'right') {
-
-                if (curWidth <= this.width) return false;
-
-                this.flowDirection = 'left';
-
-
-            }
-
-            if(this.flowDirection == 'left'){
-                if(curWidth < 0 ){
-                    this.flowDirection = 'right';
-                    margin = false;
-                    return margin;
-                }
-            }
-
-
-            let margin = parentBlock.offsetLeft - nexChildGroup.clientWidth;
-            //tailwind caused counting of rem relative margin, get taiwind measure
-            margin = margin/(this._convertRemToPixels()/4)
-//console.log('margin=>'+margin)
-
-//should be returned false oder number
-            return margin;
-
-        },
 
         _convertRemToPixels() {
             return  parseFloat(getComputedStyle(document.documentElement).fontSize);
+        },
+
+        estRowsDirection()
+        {
+            let childGroups = this.$refs.tree.querySelectorAll('.childrenGroup');
+            let actGroupWidth = childGroups[0].clientWidth;
+            let parentWidth = this.$refs.tree.clientWidth;
+            let numberInRow = Math.floor(parentWidth/actGroupWidth)-1;
+
+            let child = this.$refs.tree.querySelector('.childrenGroup');
+            let right = parentWidth -(child.clientWidth * numberInRow)
+            let serviceTreeWidth = parentWidth - right;
+
+            let leftArr =[];
+            for(let i=0; i< numberInRow; i++){
+                leftArr[i] = actGroupWidth*i;
+            }
+
+            let leftArrRev = [...leftArr].reverse()
+
+
+
+
+
+
+            let chunk_size = numberInRow;
+            let arr  = Array.from(childGroups);
+            let firstElem = arr.shift();
+            let groups = arr.map( function(e,i){
+                return i%chunk_size===0 ? arr.slice(i,i+chunk_size) : null;
+            }).filter(function(e){ return e; });
+
+//console.log(groups.length)
+
+
+//in [0] tothe right [1] to the left
+            let directionArr = groups.reduce((accumulator, value, index) => (accumulator[index % 2].push(value), accumulator), [[], []]);
+//console.log(directionArr[1][0])
+
+            //direction to the left
+            for (let i =0; i < directionArr[1].length; i++){
+
+                let length = directionArr[1][i].length;
+
+                for(let i2 = 0; i2< length; i2++)
+                {
+                    directionArr[1][i][i2].classList.add('absolute');
+                    directionArr[1][i][i2].style.left = leftArrRev[i2]+'px';
+
+                }
+
+            }
+
+
+//to the right
+            for (let i =0; i < directionArr[0].length; i++){
+                if(i === 0 ) continue;
+//console.log('action inright direction')
+
+
+                    let length = directionArr[0][i].length;
+
+                    for (let i2 = 0; i2 < length; i2++) {
+                        directionArr[0][i][i2].classList.add('absolute');
+                        directionArr[0][i][i2].style.left = leftArr[i2]+actGroupWidth+'px';
+                    }
+
+            }
+
+
         }
 
     }
