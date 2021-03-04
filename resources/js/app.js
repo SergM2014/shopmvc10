@@ -191,7 +191,6 @@ window.tree = function()
                 {
                     directionArr[1][i][i2].classList.add('absolute');
                     directionArr[1][i][i2].style.left = leftArrRev[i2]+'px';
-
                 }
 
             }
@@ -207,12 +206,13 @@ window.tree = function()
                         directionArr[0][i][i2].classList.add('absolute');
                         directionArr[0][i][i2].style.left = leftArr[i2]+actGroupWidth+'px';
                     }
-
             }
 
-
-
 //show appropriate arrows
+            let arrow = childGroups[0].querySelectorAll('.arrow-right');
+            arrow.forEach(item => item.classList.remove('hidden'));
+
+
             for(let i =0; i< directionArr[0].length; i++)
             {
                 for(let i2 = 0; i2 < directionArr[0][i].length; i2++)
