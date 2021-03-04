@@ -93,9 +93,6 @@ window.tree = function()
                 childrenGroup.style.paddingTop = actualOffsetTop+"px";
             }
 
-            // if(typeof changedFlowMargin == 'number'){
-            //     childrenGroup.classList.add('absolute', `ml-${changedFlowMargin}`, 'h-full', 'z-10', 'bg-gray-100' );
-            // }
         },
 
         _closeUselessGroups(level){
@@ -160,9 +157,8 @@ window.tree = function()
             let parentWidth = this.$refs.tree.clientWidth;
             let numberInRow = Math.floor(parentWidth/actGroupWidth)-1;
 
-            let child = this.$refs.tree.querySelector('.childrenGroup');
-            let right = parentWidth -(child.clientWidth * numberInRow)
-            let serviceTreeWidth = parentWidth - right;
+
+
 
             let leftArr =[];
             for(let i=0; i< numberInRow; i++){
@@ -172,10 +168,6 @@ window.tree = function()
             let leftArrRev = [...leftArr].reverse()
 
 
-
-
-
-
             let chunk_size = numberInRow;
             let arr  = Array.from(childGroups);
             let firstElem = arr.shift();
@@ -183,12 +175,12 @@ window.tree = function()
                 return i%chunk_size===0 ? arr.slice(i,i+chunk_size) : null;
             }).filter(function(e){ return e; });
 
-//console.log(groups.length)
-
 
 //in [0] tothe right [1] to the left
             let directionArr = groups.reduce((accumulator, value, index) => (accumulator[index % 2].push(value), accumulator), [[], []]);
-//console.log(directionArr[1][0])
+
+//console.log(directionArr)
+
 
             //direction to the left
             for (let i =0; i < directionArr[1].length; i++){
@@ -208,8 +200,6 @@ window.tree = function()
 //to the right
             for (let i =0; i < directionArr[0].length; i++){
                 if(i === 0 ) continue;
-//console.log('action inright direction')
-
 
                     let length = directionArr[0][i].length;
 
@@ -220,6 +210,51 @@ window.tree = function()
 
             }
 
+
+
+//show appropriate arrows
+            for(let i =0; i< directionArr[0].length; i++)
+            {
+                for(let i2 = 0; i2 < directionArr[0][i].length; i2++)
+                {
+                    if(i2 === directionArr[0][i].length-1){
+                        let arrow = directionArr[0][i][i2].querySelectorAll('.arrow-left');
+                        arrow.forEach(item => {
+                            item.classList.remove('hidden');
+                            item.parentNode.prepend(item)
+
+
+                        })
+                    } else {
+
+                        let arrow = directionArr[0][i][i2].querySelectorAll('.arrow-right');
+                        arrow.forEach(item => item.classList.remove('hidden'))
+                    }
+                }
+
+            }
+
+
+            for(let i =0; i< directionArr[1].length; i++)
+            {
+                for(let i2 = 0; i2 < directionArr[1][i].length; i2++)
+                {
+                    if(i2 === directionArr[1][i].length-1){
+                        let arrow = directionArr[1][i][i2].querySelectorAll('.arrow-right');
+                        arrow.forEach(item => item.classList.remove('hidden'))
+                    } else {
+
+                        let arrow = directionArr[1][i][i2].querySelectorAll('.arrow-left');
+                        arrow.forEach(item => {
+                            item.classList.remove('hidden');
+                            item.parentNode.prepend(item)
+
+
+                        })
+                    }
+                }
+
+            }
 
         }
 
