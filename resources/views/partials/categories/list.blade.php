@@ -18,8 +18,8 @@
                 @if($category['parent_id'] == $parentId)
 
 
-                    <div class="border  rounded-l px-3 py-3 my-1  break-all
-                        bg-blue-<?= ($counter+1)*100 +100 ?> hover:bg-red-600 cursor-pointer flex justify-between"
+                    <div class="border  rounded-l px-3 py-3 my-1  break-all stuff
+                        hover:bg-red-600 cursor-pointer flex justify-between"
                          x-on:mouseover="openChild(<?= $counter.','.$category['id'].','.$category['id']  ?>)" data-id="<?= $category['id'] ?>" >
                         <?=  $category['title'] .'/'.$category['parent_id'] .'/'.$category['id'] ?>
 {{--                    </div>--}}

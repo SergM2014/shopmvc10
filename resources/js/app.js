@@ -211,6 +211,8 @@ window.tree = function()
 //show appropriate arrows
             let arrow = childGroups[0].querySelectorAll('.arrow-right');
             arrow.forEach(item => item.classList.remove('hidden'));
+            let stuffs = childGroups[0].querySelectorAll('.stuff');
+            stuffs.forEach(item => item.classList.add('bg-blue-100'))
 
 
             for(let i =0; i< directionArr[0].length; i++)
@@ -222,14 +224,15 @@ window.tree = function()
                         arrow.forEach(item => {
                             item.classList.remove('hidden');
                             item.parentNode.prepend(item)
-
-
                         })
                     } else {
-
                         let arrow = directionArr[0][i][i2].querySelectorAll('.arrow-right');
                         arrow.forEach(item => item.classList.remove('hidden'))
                     }
+
+                    let color = (i+1)*100;
+                    let stuffs = directionArr[0][i][i2].querySelectorAll('.stuff')
+                    stuffs.forEach(item => item.classList.add(`bg-blue-${color}`))
                 }
 
             }
@@ -248,10 +251,12 @@ window.tree = function()
                         arrow.forEach(item => {
                             item.classList.remove('hidden');
                             item.parentNode.prepend(item)
-
-
                         })
                     }
+                    let color = (i+1)*100;
+                    let stuffs = directionArr[1][i][i2].querySelectorAll('.stuff')
+                    stuffs.forEach(item => item.classList.add(`bg-green-${color}`))
+
                 }
 
             }
