@@ -8,22 +8,27 @@ window.tree = function()
     return {
 
         minimised : true,
-        flowDirection : 'right',
-        flowRight : [],
-        flowLeft :[],
 //the width of working area
-        width : document.getElementById('tree').clientWidth,
+        width : document.getElementById('tree').parentElement.clientWidth,
+        childGroups: false,
+        directionArr : false,
+        rightDirectionColor: 'bg-blue-200',
+        leftDirectionColor: 'bg-green-200',
 
         openChild(level, parentId, currentElemId){
 
 //set minimised tree marker to false
             this.minimised = false;
             let actualEl = this.$refs.tree.querySelector('[data-id = "' + currentElemId + '"]');
+//console.log(actualEl)
+
+
             let actualOffsetTop = actualEl.offsetTop;
 
             let actualOffsetHeight = this.$refs.tree.offsetHeight
 
             this._closeUselessGroups(level,parentId);
+
 
             let nextLevel = level+1;
 
@@ -44,6 +49,9 @@ window.tree = function()
                  if (insertedItem) myItemsParentId = insertedItem;
              }
 
+            let childrenGroup = document.querySelector('[data-level = "'+nextLevel+'"]')
+
+            this._paintStuff(actualEl, childrenGroup)
  // if next items level doesnot exsists exit the process
             if(!myItemsParentId) return;
 
@@ -70,16 +78,11 @@ window.tree = function()
                 myItemsParentId.classList.remove('hidden');
             }
 
-            let childrenGroup = document.querySelector('[data-level = "'+nextLevel+'"]')
 
 
             actualOffsetTop = actualOffsetTop-4;
 
-
             childrenGroup.classList.remove('hidden');
-            let parentContainer = childrenGroup.closest('.childGroupsContainer');
-            if(parentContainer)parentContainer.classList.remove('hidden')
-
 
             childrenGroup.style.paddingTop = actualOffsetTop+"px";
 
@@ -93,6 +96,7 @@ window.tree = function()
                 childrenGroup.style.paddingTop = actualOffsetTop+"px";
             }
 
+
         },
 
         _closeUselessGroups(level){
@@ -100,9 +104,14 @@ window.tree = function()
                 let branches = this.$refs.tree.querySelectorAll('[data-level]');
 
                 branches.forEach((branch) => {
-                    if(branch.dataset.level > level) { branch.classList.add('hidden'); branch.classList.remove('z-10')}
+                    if(branch.dataset.level > level) { branch.classList.add('hidden');
+                    branch.classList.remove('z-10','m-2', 'shadow-2xl')}
+                    if(branch.dataset.level == level ) branch.classList.remove('m-2', 'shadow-2xl')
+
                 })
             },
+
+
 
         closeAll(){
 // if minimised tree marker then escape
@@ -142,34 +151,22 @@ window.tree = function()
 
         },
 
-
-// when the next children Groups items leeave parent with area change deirection to reverse
-
-
-        _convertRemToPixels() {
-            return  parseFloat(getComputedStyle(document.documentElement).fontSize);
-        },
-
         estRowsDirection()
         {
-            let childGroups = this.$refs.tree.querySelectorAll('.childrenGroup');
-            let actGroupWidth = childGroups[0].clientWidth;
-            let parentWidth = this.$refs.tree.clientWidth;
-            let numberInRow = Math.floor(parentWidth/actGroupWidth)-1;
-
-
-
-
+            this.childGroups = this.$refs.tree.querySelectorAll('.childrenGroup');
+            let actGroupWidth = this.childGroups[0].clientWidth;
+            let chunk_size = Math.floor(this.width/actGroupWidth)-1;
+//*******************
+//tis piece of code is nesasery for apropriate building to left direction rows
             let leftArr =[];
-            for(let i=0; i< numberInRow; i++){
+            for(let i=0; i< chunk_size; i++){
                 leftArr[i] = actGroupWidth*i;
             }
-
             let leftArrRev = [...leftArr].reverse()
+//*****************
 
-
-            let chunk_size = numberInRow;
-            let arr  = Array.from(childGroups);
+            let arr  = Array.from(this.childGroups);
+//for technical needs remove first elem of array
             let firstElem = arr.shift();
             let groups = arr.map( function(e,i){
                 return i%chunk_size===0 ? arr.slice(i,i+chunk_size) : null;
@@ -177,91 +174,169 @@ window.tree = function()
 
 
 //in [0] tothe right [1] to the left
-            let directionArr = groups.reduce((accumulator, value, index) => (accumulator[index % 2].push(value), accumulator), [[], []]);
-
-//console.log(directionArr)
+             this.directionArr = groups.reduce((accumulator, value, index) => (accumulator[index % 2].push(value), accumulator), [[], []]);
 
 
             //direction to the left
-            for (let i =0; i < directionArr[1].length; i++){
+            for (let i =0; i < this.directionArr[1].length; i++){
 
-                let length = directionArr[1][i].length;
+                let length = this.directionArr[1][i].length;
 
                 for(let i2 = 0; i2< length; i2++)
                 {
-                    directionArr[1][i][i2].classList.add('absolute');
-                    directionArr[1][i][i2].style.left = leftArrRev[i2]+'px';
+                    this.directionArr[1][i][i2].style.left = leftArrRev[i2]+'px';
                 }
 
             }
 
 
 //to the right
-            for (let i =0; i < directionArr[0].length; i++){
-                if(i === 0 ) continue;
-
-                    let length = directionArr[0][i].length;
+            for (let i =0; i < this.directionArr[0].length; i++){
+                //if(i === 0 ) continue;
+                    let length = this.directionArr[0][i].length;
 
                     for (let i2 = 0; i2 < length; i2++) {
-                        directionArr[0][i][i2].classList.add('absolute');
-                        directionArr[0][i][i2].style.left = leftArr[i2]+actGroupWidth+'px';
+                        this.directionArr[0][i][i2].style.left = leftArr[i2]+actGroupWidth+'px';
                     }
             }
 
-//show appropriate arrows
-            let arrow = childGroups[0].querySelectorAll('.arrow-right');
+            this._showArrows();
+            this._directionRowsColor();
+
+        },
+
+        _showArrows()
+        {
+            //show appropriate arrows
+            let arrow = this.childGroups[0].querySelectorAll('.arrow-right');
             arrow.forEach(item => item.classList.remove('hidden'));
-            let stuffs = childGroups[0].querySelectorAll('.stuff');
-            stuffs.forEach(item => item.classList.add('bg-blue-100'))
 
 
-            for(let i =0; i< directionArr[0].length; i++)
+
+            for(let i =0; i< this.directionArr[0].length; i++)
             {
-                for(let i2 = 0; i2 < directionArr[0][i].length; i2++)
+                for(let i2 = 0; i2 < this.directionArr[0][i].length; i2++)
                 {
-                    if(i2 === directionArr[0][i].length-1){
-                        let arrow = directionArr[0][i][i2].querySelectorAll('.arrow-left');
+                    if(i2 === this.directionArr[0][i].length-1){
+                        let arrow = this.directionArr[0][i][i2].querySelectorAll('.arrow-left');
                         arrow.forEach(item => {
                             item.classList.remove('hidden');
                             item.parentNode.prepend(item)
                         })
                     } else {
-                        let arrow = directionArr[0][i][i2].querySelectorAll('.arrow-right');
+                        let arrow = this.directionArr[0][i][i2].querySelectorAll('.arrow-right');
                         arrow.forEach(item => item.classList.remove('hidden'))
                     }
 
-                    let color = (i+1)*100;
-                    let stuffs = directionArr[0][i][i2].querySelectorAll('.stuff')
-                    stuffs.forEach(item => item.classList.add(`bg-blue-${color}`))
                 }
 
             }
 
 
-            for(let i =0; i< directionArr[1].length; i++)
+            for(let i =0; i< this.directionArr[1].length; i++)
             {
-                for(let i2 = 0; i2 < directionArr[1][i].length; i2++)
+                for(let i2 = 0; i2 < this.directionArr[1][i].length; i2++)
                 {
-                    if(i2 === directionArr[1][i].length-1){
-                        let arrow = directionArr[1][i][i2].querySelectorAll('.arrow-right');
+                    if(i2 === this.directionArr[1][i].length-1){
+                        let arrow = this.directionArr[1][i][i2].querySelectorAll('.arrow-right');
                         arrow.forEach(item => item.classList.remove('hidden'))
                     } else {
 
-                        let arrow = directionArr[1][i][i2].querySelectorAll('.arrow-left');
+                        let arrow = this.directionArr[1][i][i2].querySelectorAll('.arrow-left');
                         arrow.forEach(item => {
                             item.classList.remove('hidden');
                             item.parentNode.prepend(item)
                         })
                     }
-                    let color = (i+1)*100;
-                    let stuffs = directionArr[1][i][i2].querySelectorAll('.stuff')
-                    stuffs.forEach(item => item.classList.add(`bg-green-${color}`))
+
 
                 }
 
             }
+        },
 
+        _directionRowsColor()
+        {
+            //set parens column color
+            let stuffs = this.childGroups[0].querySelectorAll('.stuff');
+            stuffs.forEach(item => item.classList.add(this.rightDirectionColor))
+
+        },
+
+
+
+        _paintStuff(actualEl, childrenGroup)
+        {
+            //painting each next child items
+            let classes = actualEl.classList;
+            let color;
+            for(let i=0; i<classes.length; i++)
+            {
+                if(classes[i].startsWith('bg')) color = classes[i];
+            }
+
+            let stuff = childrenGroup.querySelectorAll('.stuff');
+
+            stuff.forEach(item => item.classList.add(color));
+
+
+            if(actualEl.classList.contains('last') && !actualEl.querySelector('.arrow-left')
+                 && !actualEl.querySelector('.arrow-right')
+            ){
+
+               let parentEl = actualEl.closest('.parentIdItems');
+               let previosSiblingClasses = parentEl.previousElementSibling.querySelector('.stuff').classList;
+
+               let previousColor;
+                for(let i=0; i<previosSiblingClasses.length; i++)
+                {
+                    if(previosSiblingClasses[i].startsWith('bg'))  previousColor = previosSiblingClasses[i];
+                }
+
+
+
+               let stuff = parentEl.querySelectorAll('.stuff');
+console.log(previousColor);
+                stuff.forEach(item => {
+//console.log('gogo')
+                    item.classList.remove(this.leftDirectionColor)
+                    item.classList.add(previousColor);
+
+                })
+            }
+
+
+
+            let turning =  actualEl.querySelector('.arrow-left:not(.hidden)');
+            if(turning) {
+                let outgoingParentId = actualEl.closest('.parentIdItems').dataset.parentId;
+//console.log(outgoingParentId)
+                let outgoingParentEl = this.$refs.tree.querySelector('[data-id = "' + outgoingParentId + '"]');
+//console.log(outgoingParentEl)
+                let findPreveousRight = outgoingParentEl.querySelector('.arrow-right:not(.hidden)');
+                if (turning && findPreveousRight)
+                {
+//console.log('turning')
+
+                    let children = childrenGroup.querySelectorAll('.stuff');
+
+                    children.forEach(item => {
+                        item.classList.add(this.leftDirectionColor);
+                        item.classList.remove(this.rightDirectionColor)
+                    })
+
+                    actualEl.closest('.parentIdItems').querySelectorAll('.stuff').forEach(item =>
+                        {
+                            item.classList.add(this.leftDirectionColor, 'last');
+                            item.classList.remove(this.rightDirectionColor)
+                        }
+
+                    )
+
+                }
+            }
         }
+
 
     }
 }

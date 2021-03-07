@@ -169,25 +169,27 @@
                         </div>
                     </header>
                     <main>
-                        <div class=" max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                        <div class="relative max-w-7xl mx-auto  md:flex">
+
                             <!-- Replace with your content -->
 <!--     categories tree is present here -->
-                            <div id="tree" x-ref="tree" class="relative md:flex" x-data="tree()"
-                                 x-on:mouseleave="closeAll()" x-on:resize.window="recoverInitialTree()"
-                                 x-data="{ minimised:true, flowDirection:right }"
-                                 x-init="estRowsDirection()"
-                            >
+                            <div id="tree"
+                                 x-ref="tree"
+                                 x-data="tree()"
+                                 x-on:mouseleave="closeAll()"
+                                 x-data="{ minimised:true }"
+                                 x-init="estRowsDirection()" >
 
-{{--                                @include ('partials.categoriesList', ['counter' => 0 ])--}}
                                 @include ('partials.categories.treeContainer')
 
                             </div>
 
 
-                            <div class="px-4 py-6 sm:px-0">
-                                <div class="border-4 border-dashed border-gray-200 rounded-lg h-96"></div>
+                            <div class="px-4 py-1 sm:px-0 md: ml-2 w-full">
+                                <div class="border-4 border-dashed border-gray-200 rounded-lg h-full"></div>
                             </div>
                             <!-- /End replace -->
+
                         </div>
                     </main>
                 </div>

@@ -8,7 +8,7 @@
 
 ?>
 
-<div class="childrenGroup  <?= $counter > 0 ? 'hidden  ': ''  ?>  md:w-40 " data-level = "<?= $counter ?>" >
+<div class="childrenGroup  <?= $counter > 0 ? 'hidden absolute top-0  ': ''  ?>  md:w-40 " data-level = "<?= $counter ?>" >
 
     @foreach($childIds as $parentId)
 {{-- in this div the children of one parent are present--}}
@@ -19,10 +19,10 @@
 
 
                     <div class="border  rounded-l px-3 py-3 my-1  break-all stuff
-                        hover:bg-red-600 cursor-pointer flex justify-between"
+                        hover:bg-red-600 cursor-pointer flex justify-between z-10"
                          x-on:mouseover="openChild(<?= $counter.','.$category['id'].','.$category['id']  ?>)" data-id="<?= $category['id'] ?>" >
                         <?=  $category['title'] .'/'.$category['parent_id'] .'/'.$category['id'] ?>
-{{--                    </div>--}}
+
                             <?php $printedArrow = false; ?>
                             @foreach ($categories as $subCategory)
                                 <?php if($subCategory['parent_id'] == $category['id'])
