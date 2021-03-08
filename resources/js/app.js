@@ -12,8 +12,7 @@ window.tree = function()
         width : document.getElementById('tree').parentElement.clientWidth,
         childGroups: false,
         directionArr : false,
-        rightDirectionColor: 'bg-blue-200',
-        leftDirectionColor: 'bg-green-200',
+        directionsColors: ['bg-blue-200','bg-green-200','bg-indigo-200'],
 
         openChild(level, parentId, currentElemId){
 
@@ -259,7 +258,7 @@ window.tree = function()
         {
             //set parens column color
             let stuffs = this.childGroups[0].querySelectorAll('.stuff');
-            stuffs.forEach(item => item.classList.add(this.rightDirectionColor))
+            stuffs.forEach(item => item.classList.add(this.directionsColors[0]))
 
         },
 
@@ -284,13 +283,14 @@ window.tree = function()
                  && !actualEl.querySelector('.arrow-right')
             ){
 
-               let parentEl = actualEl.closest('.parentIdItems');
-               let previosSiblingClasses = parentEl.previousElementSibling.querySelector('.stuff').classList;
+               let parentEl = actualEl.closest('.childrenGroup');
 
+                let previousSiblingClasses =  parentEl.previousElementSibling.querySelector('.stuff').classList;
+//console.log(previousSiblingClasses)
                let previousColor;
-                for(let i=0; i<previosSiblingClasses.length; i++)
+                for(let i=0; i<previousSiblingClasses.length; i++)
                 {
-                    if(previosSiblingClasses[i].startsWith('bg'))  previousColor = previosSiblingClasses[i];
+                    if(previousSiblingClasses[i].startsWith('bg'))  previousColor = previousSiblingClasses[i];
                 }
 
 
@@ -298,8 +298,7 @@ window.tree = function()
                let stuff = parentEl.querySelectorAll('.stuff');
 console.log(previousColor);
                 stuff.forEach(item => {
-//console.log('gogo')
-                    item.classList.remove(this.leftDirectionColor)
+                    item.classList.remove(this.directionsColors[1])
                     item.classList.add(previousColor);
 
                 })
@@ -321,14 +320,14 @@ console.log(previousColor);
                     let children = childrenGroup.querySelectorAll('.stuff');
 
                     children.forEach(item => {
-                        item.classList.add(this.leftDirectionColor);
-                        item.classList.remove(this.rightDirectionColor)
+                        item.classList.add(this.directionsColors[1]);
+                        item.classList.remove(this.directionsColors[0])
                     })
 
                     actualEl.closest('.parentIdItems').querySelectorAll('.stuff').forEach(item =>
                         {
-                            item.classList.add(this.leftDirectionColor, 'last');
-                            item.classList.remove(this.rightDirectionColor)
+                            item.classList.add(this.directionsColors[1], 'last');
+                            item.classList.remove(this.directionsColors[0])
                         }
 
                     )
