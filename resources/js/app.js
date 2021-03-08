@@ -278,44 +278,24 @@ window.tree = function()
 
             stuff.forEach(item => item.classList.add(color));
 
-
+//returning previous color for the last direction stuff in case of turnig direction left
             if(actualEl.classList.contains('last') && !actualEl.querySelector('.arrow-left')
                  && !actualEl.querySelector('.arrow-right')
             ){
-
-               let parentEl = actualEl.closest('.childrenGroup');
-
-                let previousSiblingClasses =  parentEl.previousElementSibling.querySelector('.stuff').classList;
-//console.log(previousSiblingClasses)
-               let previousColor;
-                for(let i=0; i<previousSiblingClasses.length; i++)
-                {
-                    if(previousSiblingClasses[i].startsWith('bg'))  previousColor = previousSiblingClasses[i];
-                }
-
-
-
-               let stuff = parentEl.querySelectorAll('.stuff');
-console.log(previousColor);
-                stuff.forEach(item => {
-                    item.classList.remove(this.directionsColors[1])
-                    item.classList.add(previousColor);
-
-                })
+                this._returnLastStuffColor(actualEl, this.directionsColors[1])
             }
 
 
 
-            let turning =  actualEl.querySelector('.arrow-left:not(.hidden)');
-            if(turning) {
+            let turningLeft =  actualEl.querySelector('.arrow-left:not(.hidden)');
+            if(turningLeft) {
                 let outgoingParentId = actualEl.closest('.parentIdItems').dataset.parentId;
-//console.log(outgoingParentId)
+
                 let outgoingParentEl = this.$refs.tree.querySelector('[data-id = "' + outgoingParentId + '"]');
-//console.log(outgoingParentEl)
-                let findPreveousRight = outgoingParentEl.querySelector('.arrow-right:not(.hidden)');
-                if (turning && findPreveousRight)
+
+                let findPrevieousRight = outgoingParentEl.querySelector('.arrow-right:not(.hidden)');
+                if (turningLeft && findPrevieousRight)
                 {
-//console.log('turning')
 
                     let children = childrenGroup.querySelectorAll('.stuff');
 
@@ -334,6 +314,69 @@ console.log(previousColor);
 
                 }
             }
+
+
+
+            let turningRight =  actualEl.querySelector('.arrow-right:not(.hidden)');
+            if(turningRight) {
+
+                let parentDiv = actualEl.closest('.parentIdItems');
+                if(!parentDiv) return;
+
+                let outgoingParentId =  parentDiv.dataset.parentId;
+
+                let outgoingParentEl = this.$refs.tree.querySelector('[data-id = "' + outgoingParentId + '"]');
+
+                let findPrevieousLeft = outgoingParentEl.querySelector('.arrow-left:not(.hidden)');
+                if (turningRight && findPrevieousLeft)
+                {
+
+                    let children = childrenGroup.querySelectorAll('.stuff');
+
+                    children.forEach(item => {
+                        item.classList.add(this.directionsColors[2]);
+                        item.classList.remove(this.directionsColors[1])
+                    })
+
+                    actualEl.closest('.parentIdItems').querySelectorAll('.stuff').forEach(item =>
+                        {
+                            item.classList.add(this.directionsColors[2], 'last');
+                            item.classList.remove(this.directionsColors[1])
+                        }
+
+                    )
+
+                }
+            }
+        },
+
+        _returnLastStuffColor(actualEl, colorToDel)
+        {
+            let parentEl = actualEl.closest('.childrenGroup');
+
+            let parentElClasses = parentEl.querySelector('.stuff').classList;
+            let currentColorToDel;
+
+            for(let i=0; i< parentElClasses.length; i++)
+            {
+                if(parentElClasses[i].startsWith('bg'))  currentColorToDel = parentElClasses[i];
+            }
+
+            let previousSiblingClasses =  parentEl.previousElementSibling.querySelector('.stuff').classList;
+    //console.log(previousSiblingClasses)
+
+            let previousColor;
+            for(let i=0; i<previousSiblingClasses.length; i++)
+            {
+                if(previousSiblingClasses[i].startsWith('bg'))  previousColor = previousSiblingClasses[i];
+            }
+
+            let stuff = parentEl.querySelectorAll('.stuff');
+            stuff.forEach(item => {
+                item.classList.remove(currentColorToDel)
+                item.classList.add(previousColor);
+
+            })
         }
 
 
