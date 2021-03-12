@@ -177,8 +177,9 @@
                                  x-ref="tree"
                                  x-data="tree()"
                                  x-on:mouseleave="closeAll()"
+                                 x-on:resize.window="recoverInitialBigTree()"
                                  x-data="{ minimised:true }"
-                                 x-init="estRowsDirection()" >
+                                 x-init="initTree" >
 
                                 @include ('partials.categories.treeContainer')
 
