@@ -177,7 +177,7 @@
                                  x-ref="tree"
                                  x-data="tree()"
                                  x-on:mouseleave="closeAll()"
-                                 x-on:resize.window="recoverInitialBigTree()"
+                                 x-on:resize.window="restoreAppropriateTree()"
                                  x-data="{ minimised:true }"
                                  x-init="initTree" >
 

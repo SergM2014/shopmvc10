@@ -95,7 +95,13 @@ window.tree = function()
             this.minimised = true;
         },
 
-        recoverInitialBigTree()
+        restoreAppropriateTree()
+        {
+            this._buildSmallScreenTree();
+            this._recoverInitialBigTree();
+        },
+
+        _recoverInitialBigTree()
         {
 
             if(window.innerWidth < 768) return;
@@ -112,10 +118,22 @@ window.tree = function()
                 childrenGroups[i].style.removeProperty('top');
 
                 let classes = childrenGroups[i].classList;
-                for(let i=0; i < classes.length; i++)
+                for(let i2=0; i2 < classes.length; i2++)
                 {
-                    if(classes[i].startsWith('bg')) childrenGroups[i].classList.remove(classes[i])
+                    if(classes[i2].startsWith('bg')) childrenGroups[i].classList.remove(classes[i])
                 }
+            }
+
+            let stuffes = this.$refs.tree.querySelectorAll('.stuff');
+            for(let i = 1; i < stuffes.length; i++ )
+            {
+                let classes = stuffes[i].classList;
+                for(let i2 =0; i2 < classes.length; i2++)
+                {
+                    if(classes[i2].startsWith('bg')) stuffes[i].classList.remove(classes[i2])
+
+                }
+
             }
 
            this._estRowsDirection()
@@ -155,7 +173,7 @@ window.tree = function()
             let groups = arr.map( function(e,i){
                 return i % chunk_size === 0 ? arr.slice(i,i+chunk_size) : null;
             }).filter(function(e){ return e; });
-console.log(groups)
+
 
 //in [0] tothe right [1] to the left
             this.directionArr = groups.reduce((accumulator, value, index) =>
@@ -233,6 +251,12 @@ console.log(groups)
                 }
 
             }
+        },
+
+        _hideSideArrows()
+        {
+            let arrows = this.$refs.tree.querySelectorAll('.arrow-right, .arrow-left');
+            arrows.forEach(item => item.classList.add('hidden'));
         },
 
         _showDownArrows()
@@ -374,6 +398,8 @@ console.log(groups)
         _buildSmallScreenTree()
         {
             if(window.innerWidth > 768) return;
+            this._hideSideArrows();
+            this._removeBigScreenClasses();
             this._setFirstColumnColor();
             this._showDownArrows()
 
@@ -455,6 +481,27 @@ console.log(groups)
             })
 
         },
+
+        _removeBigScreenClasses()
+        {
+            let childrenGroups = this.$refs.tree.querySelectorAll('.childrenGroup');
+
+//b esides the first child group
+
+            for(let i = 1; i< childrenGroups.length; i++)
+            {
+                childrenGroups[i].classList.remove('top-0');
+                childrenGroups[i].classList.add('left-0','right-0');
+                childrenGroups[i].style.removeProperty('left');
+
+                let classes = childrenGroups[i].classList;
+                for(let i=0; i < classes.length; i++)
+                {
+                    if(classes[i].startsWith('bg')) childrenGroups[i].classList.remove(classes[i])
+                }
+            }
+        }
+
 
 
     }

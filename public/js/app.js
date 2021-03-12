@@ -3908,7 +3908,12 @@ window.tree = function () {
 
       this.minimised = true;
     },
-    recoverInitialBigTree: function recoverInitialBigTree() {
+    restoreAppropriateTree: function restoreAppropriateTree() {
+      this._buildSmallScreenTree();
+
+      this._recoverInitialBigTree();
+    },
+    _recoverInitialBigTree: function _recoverInitialBigTree() {
       if (window.innerWidth < 768) return;
 
       this._hideDownArrows();
@@ -3921,8 +3926,18 @@ window.tree = function () {
         childrenGroups[i].style.removeProperty('top');
         var classes = childrenGroups[i].classList;
 
-        for (var _i = 0; _i < classes.length; _i++) {
-          if (classes[_i].startsWith('bg')) childrenGroups[_i].classList.remove(classes[_i]);
+        for (var i2 = 0; i2 < classes.length; i2++) {
+          if (classes[i2].startsWith('bg')) childrenGroups[i].classList.remove(classes[i]);
+        }
+      }
+
+      var stuffes = this.$refs.tree.querySelectorAll('.stuff');
+
+      for (var _i = 1; _i < stuffes.length; _i++) {
+        var _classes = stuffes[_i].classList;
+
+        for (var _i2 = 0; _i2 < _classes.length; _i2++) {
+          if (_classes[_i2].startsWith('bg')) stuffes[_i].classList.remove(_classes[_i2]);
         }
       }
 
@@ -3958,28 +3973,27 @@ window.tree = function () {
         return i % chunk_size === 0 ? arr.slice(i, i + chunk_size) : null;
       }).filter(function (e) {
         return e;
-      });
-      console.log(groups); //in [0] tothe right [1] to the left
+      }); //in [0] tothe right [1] to the left
 
       this.directionArr = groups.reduce(function (accumulator, value, index) {
         return accumulator[index % 2].push(value), accumulator;
       }, [[], []]); //console.log(this.directionArr)
       //direction to the left
 
-      for (var _i2 = 0; _i2 < this.directionArr[1].length; _i2++) {
-        var length = this.directionArr[1][_i2].length;
+      for (var _i3 = 0; _i3 < this.directionArr[1].length; _i3++) {
+        var length = this.directionArr[1][_i3].length;
 
         for (var i2 = 0; i2 < length; i2++) {
-          this.directionArr[1][_i2][i2].style.left = leftArrRev[i2] + 'px';
+          this.directionArr[1][_i3][i2].style.left = leftArrRev[i2] + 'px';
         }
       } //to the right
 
 
-      for (var _i3 = 0; _i3 < this.directionArr[0].length; _i3++) {
-        var _length = this.directionArr[0][_i3].length;
+      for (var _i4 = 0; _i4 < this.directionArr[0].length; _i4++) {
+        var _length = this.directionArr[0][_i4].length;
 
-        for (var _i4 = 0; _i4 < _length; _i4++) {
-          this.directionArr[0][_i3][_i4].style.left = leftArr[_i4] + actGroupWidth + 'px';
+        for (var _i5 = 0; _i5 < _length; _i5++) {
+          this.directionArr[0][_i4][_i5].style.left = leftArr[_i5] + actGroupWidth + 'px';
         }
       }
 
@@ -4013,16 +4027,16 @@ window.tree = function () {
         }
       }
 
-      for (var _i5 = 0; _i5 < this.directionArr[1].length; _i5++) {
-        for (var _i6 = 0; _i6 < this.directionArr[1][_i5].length; _i6++) {
-          if (_i6 === this.directionArr[1][_i5].length - 1) {
-            var _arrow3 = this.directionArr[1][_i5][_i6].querySelectorAll('.arrow-right');
+      for (var _i6 = 0; _i6 < this.directionArr[1].length; _i6++) {
+        for (var _i7 = 0; _i7 < this.directionArr[1][_i6].length; _i7++) {
+          if (_i7 === this.directionArr[1][_i6].length - 1) {
+            var _arrow3 = this.directionArr[1][_i6][_i7].querySelectorAll('.arrow-right');
 
             _arrow3.forEach(function (item) {
               return item.classList.remove('hidden');
             });
           } else {
-            var _arrow4 = this.directionArr[1][_i5][_i6].querySelectorAll('.arrow-left');
+            var _arrow4 = this.directionArr[1][_i6][_i7].querySelectorAll('.arrow-left');
 
             _arrow4.forEach(function (item) {
               item.classList.remove('hidden');
@@ -4031,6 +4045,12 @@ window.tree = function () {
           }
         }
       }
+    },
+    _hideSideArrows: function _hideSideArrows() {
+      var arrows = this.$refs.tree.querySelectorAll('.arrow-right, .arrow-left');
+      arrows.forEach(function (item) {
+        return item.classList.add('hidden');
+      });
     },
     _showDownArrows: function _showDownArrows() {
       for (var i = 0; i < this.childGroups.length; i++) {
@@ -4139,8 +4159,8 @@ window.tree = function () {
       var previousSiblingClasses = parentEl.previousElementSibling.querySelector('.stuff').classList;
       var previousColor;
 
-      for (var _i7 = 0; _i7 < previousSiblingClasses.length; _i7++) {
-        if (previousSiblingClasses[_i7].startsWith('bg')) previousColor = previousSiblingClasses[_i7];
+      for (var _i8 = 0; _i8 < previousSiblingClasses.length; _i8++) {
+        if (previousSiblingClasses[_i8].startsWith('bg')) previousColor = previousSiblingClasses[_i8];
       }
 
       var stuff = parentEl.querySelectorAll('.stuff');
@@ -4151,6 +4171,10 @@ window.tree = function () {
     },
     _buildSmallScreenTree: function _buildSmallScreenTree() {
       if (window.innerWidth > 768) return;
+
+      this._hideSideArrows();
+
+      this._removeBigScreenClasses();
 
       this._setFirstColumnColor();
 
@@ -4193,8 +4217,8 @@ window.tree = function () {
 
       var previousColor;
 
-      for (var _i8 = 0; _i8 < parentElClasses.length; _i8++) {
-        if (parentElClasses[_i8].startsWith('bg')) previousColor = parentElClasses[_i8];
+      for (var _i9 = 0; _i9 < parentElClasses.length; _i9++) {
+        if (parentElClasses[_i9].startsWith('bg')) previousColor = parentElClasses[_i9];
       }
 
       var arr = previousColor.split('-');
@@ -4213,6 +4237,20 @@ window.tree = function () {
         item.classList.remove(currentColorToDel);
         item.classList.add(previousColor);
       });
+    },
+    _removeBigScreenClasses: function _removeBigScreenClasses() {
+      var childrenGroups = this.$refs.tree.querySelectorAll('.childrenGroup'); //b esides the first child group
+
+      for (var i = 1; i < childrenGroups.length; i++) {
+        childrenGroups[i].classList.remove('top-0');
+        childrenGroups[i].classList.add('left-0', 'right-0');
+        childrenGroups[i].style.removeProperty('left');
+        var classes = childrenGroups[i].classList;
+
+        for (var _i10 = 0; _i10 < classes.length; _i10++) {
+          if (classes[_i10].startsWith('bg')) childrenGroups[_i10].classList.remove(classes[_i10]);
+        }
+      }
     }
   };
 };
