@@ -4245,6 +4245,7 @@ window.tree = function () {
         childrenGroups[i].classList.remove('top-0');
         childrenGroups[i].classList.add('left-0', 'right-0');
         childrenGroups[i].style.removeProperty('left');
+        childrenGroups[i].style.removeProperty('padding-top');
         var classes = childrenGroups[i].classList;
 
         for (var _i10 = 0; _i10 < classes.length; _i10++) {
