@@ -25,4 +25,8 @@ class Product extends Model
     {
         return $this->belongsTo(Owner::class);
     }
+    public  function comment()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

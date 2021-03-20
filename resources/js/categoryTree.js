@@ -179,7 +179,7 @@ window.tree = function()
             this.directionArr = groups.reduce((accumulator, value, index) =>
                 (accumulator[index % 2].push(value), accumulator), [[], []]
             );
-//console.log(this.directionArr)
+
             //direction to the left
             for (let i =0; i < this.directionArr[1].length; i++){
                 let length = this.directionArr[1][i].length;
