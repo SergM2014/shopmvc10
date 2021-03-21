@@ -20,7 +20,8 @@ class CreateCommentsTable extends Migration
             $table->string('avatar')-> nullable();
             $table->text('excerpt');
             $table->text('text');
-
+            $table->enum('published', [0,1])->default(1);
+            $table->enum('changed', [0,1])->default(0);
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')
