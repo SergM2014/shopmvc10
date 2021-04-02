@@ -31424,6 +31424,12 @@ select {
           animation: bounce 1s infinite;
 }
 
+.gallery {
+  height: 50vh;
+  min-height: 500px;
+  max-height: 1000px;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

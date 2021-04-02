@@ -3977,8 +3977,7 @@ window.tree = function () {
 
       this.directionArr = groups.reduce(function (accumulator, value, index) {
         return accumulator[index % 2].push(value), accumulator;
-      }, [[], []]); //console.log(this.directionArr)
-      //direction to the left
+      }, [[], []]); //direction to the left
 
       for (var _i3 = 0; _i3 < this.directionArr[1].length; _i3++) {
         var length = this.directionArr[1][_i3].length;

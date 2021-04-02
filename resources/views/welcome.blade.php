@@ -6,6 +6,8 @@
 
         <title>Laravel</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link href="/css/gallery/gallery.css" rel="stylesheet">
+        <link href="/css/gallery/gallery-keyframes-scroll.css" rel="stylesheet">
 
         <style>
             [x-cloak] { display: none; }
@@ -188,7 +190,9 @@
 
 
                             <div class="px-4 py-1 sm:px-0 md: ml-2 w-full">
-                                <div class="border-4 border-dashed border-gray-200 rounded-lg h-full"></div>
+                                <div class="border-4 border-dashed border-gray-200 rounded-lg ">
+                                    @include('partials.pictureCarousel')
+                                </div>
                             </div>
                             <!-- /End replace -->
 
@@ -206,6 +210,8 @@ echo memory_get_peak_usage ( true );
 
 
         <script src="{{mix('js/app.js') }}" deffer ></script>
+        <script src="/js/gallery/gallery.js"></script>
+
     </body>
 
 </html>
