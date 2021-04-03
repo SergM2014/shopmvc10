@@ -176,7 +176,7 @@
 
                             <!-- Replace with your content -->
 <!--     categories tree is present here -->
-                            <div id="tree"
+                            <div id="tree" style="z-index: 10000"
                                  x-ref="tree"
                                  x-data="tree()"
                                  x-on:mouseleave="closeAll()"
