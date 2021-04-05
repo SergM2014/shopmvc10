@@ -3843,48 +3843,67 @@ window.carousel = function () {
   return {
     minimised: true,
     //the width of working area
-    width: document.getElementById('carousel_container').clientWidth,
     leftReserve: [],
     rightReserve: [],
     initCarousel: function initCarousel() {
       var _this = this;
 
+      this.leftReserve = [];
+      this.rightReserve = [];
+      this.$refs.carousel.querySelector('.swiper-left').classList.remove('hidden');
+      this.$refs.carousel.querySelector('.swiper-right').classList.remove('hidden');
+      var width = document.getElementById('carousel_container').clientWidth;
       var firstImage = this.$refs.carousel.querySelector('.element');
       var images = this.$refs.carousel.querySelectorAll('.element');
+      images.forEach(function (item) {
+        return item.classList.add('hidden');
+      });
       firstImage.classList.remove('hidden');
       var imageLength = firstImage.offsetWidth;
-      var imageSize = Math.floor(this.width / imageLength);
+      var imageChunk = Math.floor(width / imageLength);
 
-      for (var i = 0; i < imageSize; i++) {
+      for (var i = 0; i < imageChunk; i++) {
         images[i].classList.remove('hidden');
       }
 
       var nodeList = this.$refs.carousel.querySelectorAll('.element.hidden ');
       nodeList.forEach(function (item) {
         return _this.rightReserve.push(item.dataset.marker);
-      }); //console.log(this.rightReserve)
+      });
     },
     swiperLeft: function swiperLeft() {
       var visiableImages = this.$refs.carousel.querySelectorAll('.element:not(.hidden) ');
       var movedImage = visiableImages[0];
-      if (this.rightReserve.length === 0) return;
+
+      if (this.rightReserve.length === 0) {
+        this.$refs.carousel.querySelector('.swiper-left').classList.add('hidden');
+        return;
+      }
+
       movedImage.classList.add('hidden');
       var markerToHide = movedImage.dataset.marker;
       this.leftReserve.push(markerToHide);
       var markerToShow = this.rightReserve.shift();
       var imageToShow = this.$refs.carousel.querySelector("[data-marker=\"".concat(markerToShow, "\"]"));
       imageToShow.classList.remove('hidden');
+      this.$refs.carousel.querySelector('.swiper-right').classList.remove('hidden');
     },
     swiperRight: function swiperRight() {
       var visiableImages = this.$refs.carousel.querySelectorAll('.element:not(.hidden) ');
       var movedImage = visiableImages[visiableImages.length - 1];
-      if (this.leftReserve.length === 0) return;
+
+      if (this.leftReserve.length === 0) {
+        this.$refs.carousel.querySelector('.swiper-right').classList.add('hidden');
+        return;
+      }
+
       movedImage.classList.add('hidden');
       var markerToHide = movedImage.dataset.marker;
       this.rightReserve.unshift(markerToHide);
       var markerToShow = this.leftReserve.pop();
       var imageToShow = this.$refs.carousel.querySelector("[data-marker=\"".concat(markerToShow, "\"]"));
       imageToShow.classList.remove('hidden');
+      this.$refs.carousel.querySelector('.swiper-left').classList.remove('hidden');
     }
   };
 };

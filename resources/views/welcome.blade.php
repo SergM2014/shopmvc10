@@ -13,7 +13,7 @@
             [x-cloak] { display: none; }
         </style>
 
-    <body class="antialiased">
+    <body class="antialiased " >
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
 
             @if (Route::has('login'))
@@ -32,7 +32,7 @@
             @endif
 
 
-                <div class="sm:mt-12">
+                <div class="sm:mt-12 min-w-full md:min-w-0 ">
                     <nav class="bg-gray-800">
                         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div class="flex items-center justify-between h-16">
@@ -197,13 +197,11 @@
                             <!-- /End replace -->
 
                         </div>
-                        <div id="carousel_container" class=" border-4 h-24 pt-3 max-w-7xl relative"
+                        <div id="carousel_container" class=" border-4 h-24 pt-3 max-w-7xl relative overflow-hidden bg-blue-100"
                              x-ref="carousel"
                              x-data="carousel()"
-{{--                             x-on:mouseleave="closeAll()"--}}
-{{--                             x-on:resize.window="restoreAppropriateTree()"--}}
-{{--                             x-data="{ minimised:true }"--}}
-                             x-init="initCarousel"
+                             x-on:resize.window="initCarousel()"
+                             x-init="initCarousel()"
                         >
                             @include('partials.carousel')
                         </div>
