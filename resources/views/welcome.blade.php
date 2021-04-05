@@ -197,6 +197,17 @@
                             <!-- /End replace -->
 
                         </div>
+                        <div id="carousel_container" class=" border-4 h-24 pt-3 max-w-7xl relative"
+                             x-ref="carousel"
+                             x-data="carousel()"
+{{--                             x-on:mouseleave="closeAll()"--}}
+{{--                             x-on:resize.window="restoreAppropriateTree()"--}}
+{{--                             x-data="{ minimised:true }"--}}
+                             x-init="initCarousel"
+                        >
+                            @include('partials.carousel')
+                        </div>
+
                     </main>
                 </div>
 
