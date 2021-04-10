@@ -1,8 +1,9 @@
 
 
-<img src="<?=  asset('storage/swiper/left.png'); ?>" @click = "swiperLeft()"
+<img src="<?=  asset('storage/swiper/left.png'); ?>" @click = "swiperLeft()" x-show = "leftArrow"
      class="absolute h-12 left-0.5 top-5  opacity-50 swiper-left cursor-pointer hover:bg-red-600 rounded-lg hover:opacity-100">
-<img src="<?= asset('storage/swiper/right.png'); ?>" @click = "swiperRight()"
+
+<img src="<?= asset('storage/swiper/right.png'); ?>" @click = "swiperRight()" x-show = "rightArrow"
      class="absolute h-12 right-0.5 top-5 cursor-pointer opacity-50 swiper-right cursor-pointer hover:bg-red-600 rounded-lg hover:opacity-100">
 
 

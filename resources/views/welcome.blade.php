@@ -189,7 +189,7 @@
                             </div>
 
 
-                            <div class="px-4 py-1 sm:px-0 md: ml-2 w-full">
+                            <div class="px-4 py-1 sm:px-0 md: ml-2 w-full z-0">
                                 <div class="border-4 border-dashed border-gray-200 rounded-lg ">
                                     @include('partials.pictureCarousel')
                                 </div>

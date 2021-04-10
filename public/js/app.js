@@ -3842,16 +3842,15 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.carousel = function () {
   return {
     minimised: true,
-    //the width of working area
     leftReserve: [],
     rightReserve: [],
+    leftArrow: true,
+    rightArrow: true,
     initCarousel: function initCarousel() {
       var _this = this;
 
       this.leftReserve = [];
       this.rightReserve = [];
-      this.$refs.carousel.querySelector('.swiper-left').classList.remove('hidden');
-      this.$refs.carousel.querySelector('.swiper-right').classList.remove('hidden');
       var width = document.getElementById('carousel_container').clientWidth;
       var firstImage = this.$refs.carousel.querySelector('.element');
       var images = this.$refs.carousel.querySelectorAll('.element');
@@ -3876,7 +3875,7 @@ window.carousel = function () {
       var movedImage = visiableImages[0];
 
       if (this.rightReserve.length === 0) {
-        this.$refs.carousel.querySelector('.swiper-left').classList.add('hidden');
+        this.leftArrow = false;
         return;
       }
 
@@ -3886,14 +3885,14 @@ window.carousel = function () {
       var markerToShow = this.rightReserve.shift();
       var imageToShow = this.$refs.carousel.querySelector("[data-marker=\"".concat(markerToShow, "\"]"));
       imageToShow.classList.remove('hidden');
-      this.$refs.carousel.querySelector('.swiper-right').classList.remove('hidden');
+      this.rightArrow = true;
     },
     swiperRight: function swiperRight() {
       var visiableImages = this.$refs.carousel.querySelectorAll('.element:not(.hidden) ');
       var movedImage = visiableImages[visiableImages.length - 1];
 
       if (this.leftReserve.length === 0) {
-        this.$refs.carousel.querySelector('.swiper-right').classList.add('hidden');
+        this.rightArrow = false;
         return;
       }
 
@@ -3903,7 +3902,7 @@ window.carousel = function () {
       var markerToShow = this.leftReserve.pop();
       var imageToShow = this.$refs.carousel.querySelector("[data-marker=\"".concat(markerToShow, "\"]"));
       imageToShow.classList.remove('hidden');
-      this.$refs.carousel.querySelector('.swiper-left').classList.remove('hidden');
+      this.leftArrow = true;
     }
   };
 };

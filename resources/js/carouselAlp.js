@@ -3,16 +3,15 @@ window.carousel = function()
     return {
 
         minimised : true,
-//the width of working area
         leftReserve: [],
         rightReserve:[],
+        leftArrow: true,
+        rightArrow: true,
 
         initCarousel()
         {
             this.leftReserve = [];
             this.rightReserve = [];
-            this.$refs.carousel.querySelector('.swiper-left').classList.remove('hidden');
-            this.$refs.carousel.querySelector('.swiper-right').classList.remove('hidden');
 
             let width = document.getElementById('carousel_container').clientWidth;
             let firstImage = this.$refs.carousel.querySelector('.element');
@@ -41,7 +40,7 @@ window.carousel = function()
 
             let movedImage = visiableImages[0];
             if(this.rightReserve.length === 0 ) {
-                this.$refs.carousel.querySelector('.swiper-left').classList.add('hidden');
+              this.leftArrow = false;
                 return;
             }
             movedImage.classList.add('hidden');
@@ -54,8 +53,7 @@ window.carousel = function()
 
             let imageToShow = this.$refs.carousel.querySelector(`[data-marker="${markerToShow}"]`)
             imageToShow.classList.remove('hidden');
-            this.$refs.carousel.querySelector('.swiper-right').classList.remove('hidden');
-
+            this.rightArrow = true;
         },
 
         swiperRight()
@@ -65,7 +63,7 @@ window.carousel = function()
             let movedImage = visiableImages[visiableImages.length - 1];
 
             if(this.leftReserve.length === 0 ) {
-                this.$refs.carousel.querySelector('.swiper-right').classList.add('hidden');
+                this.rightArrow = false;
                 return;
             }
 
@@ -79,7 +77,7 @@ window.carousel = function()
 
             let imageToShow = this.$refs.carousel.querySelector(`[data-marker="${markerToShow}"]`)
             imageToShow.classList.remove('hidden');
-            this.$refs.carousel.querySelector('.swiper-left').classList.remove('hidden');
+            this.leftArrow = true;
         }
 
 
