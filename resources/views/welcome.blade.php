@@ -197,7 +197,8 @@
                             <!-- /End replace -->
 
                         </div>
-                        <div id="carousel_container" class=" border-4 h-24 pt-3 max-w-7xl relative overflow-hidden bg-blue-100"
+                        <div id="carousel_container" class="flex justify-between
+                         border-4 rounded-lg h-24 pt-3 max-w-7xl relative overflow-hidden bg-blue-100"
                              x-ref="carousel"
                              x-data="carousel()"
                              x-on:resize.window="initCarousel()"

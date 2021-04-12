@@ -3851,7 +3851,7 @@ window.carousel = function () {
 
       this.leftReserve = [];
       this.rightReserve = [];
-      var width = document.getElementById('carousel_container').clientWidth;
+      var width = document.getElementById('carousel_inhalt').clientWidth;
       var firstImage = this.$refs.carousel.querySelector('.element');
       var images = this.$refs.carousel.querySelectorAll('.element');
       images.forEach(function (item) {

@@ -13,7 +13,7 @@ window.carousel = function()
             this.leftReserve = [];
             this.rightReserve = [];
 
-            let width = document.getElementById('carousel_container').clientWidth;
+            let width = document.getElementById('carousel_inhalt').clientWidth;
             let firstImage = this.$refs.carousel.querySelector('.element');
             let images = this.$refs.carousel.querySelectorAll('.element');
             images.forEach(item => item.classList.add('hidden'))
