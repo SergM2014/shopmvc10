@@ -1,8 +1,9 @@
 
-
+<div class="inline-block  w-12 opacity-50 swiper-left m-2">
 <img src="<?=  asset('storage/swiper/left.png'); ?>" @click = "swiperLeft()" x-show = "leftArrow"
-     class="inline-block h-12  opacity-50 swiper-left m-2
+     class="h-12
      cursor-pointer hover:bg-red-600 rounded-lg hover:opacity-100">
+</div>
 
 <div id = "carousel_inhalt" class="w-5/6 inline-block">
     <?php $pictures = range(1,16);
@@ -18,11 +19,11 @@
     <?php endforeach; ?>
 </div>
 
-
-<img src="<?= asset('storage/swiper/right.png'); ?>" @click = "swiperRight()" x-show = "rightArrow"
-     class=" h-12 m-2
-     inline-block  cursor-pointer opacity-50 swiper-right cursor-pointer hover:bg-red-600 rounded-lg hover:opacity-100">
-
+<div class="inline-block  w-12 opacity-50 swiper-right m-2">
+    <img src="<?= asset('storage/swiper/right.png'); ?>" @click = "swiperRight()" x-show = "rightArrow"
+         class=" h-12 cursor-pointer hover:bg-red-600
+         rounded-lg hover:opacity-100">
+</div>
 
 
 
