@@ -8,7 +8,7 @@
 
 ?>
 
-<div class="childrenGroup  <?= $counter > 0 ? 'hidden absolute top-0  ': ''  ?>  md:w-40 " data-level = "<?= $counter ?>" >
+<div class="childrenGroup  <?= $counter > 0 ? 'hidden absolute top-0  ': ''  ?>  md:w-40 " data-level = "<?= $counter ?>" style="z-index: 10000" >
 
     @foreach($childIds as $parentId)
 {{-- in this div the children of one parent are present--}}
