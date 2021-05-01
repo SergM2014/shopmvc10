@@ -202,6 +202,8 @@
                              x-ref="carousel"
                              x-data="carousel()"
                              x-on:resize.window="initCarousel()"
+                             x-on:swipe-left.window="swiperLeft()"
+                             x-on:swipe-right.window="swiperRight()"
                              x-init="initCarousel()"
                         >
                             @include('partials.carousel')

@@ -80,36 +80,29 @@ window.carousel = function()
             this.leftArrow = true;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
+
+
+
+
+//gesture on screen are added
+
+
+
+let container = document.getElementById('carousel_container');
+
+let listener = SwipeListener(container);
+container.addEventListener('swipe', function (e) {
+    let directions = e.detail.directions;
+
+
+    if (directions.left) {
+        window.dispatchEvent(new CustomEvent('swipe-left'));
+    }
+
+    if (directions.right) {
+        window.dispatchEvent(new CustomEvent('swipe-right'));
+    }
+
+});
