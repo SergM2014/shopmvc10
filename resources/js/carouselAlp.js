@@ -3,15 +3,13 @@ window.carousel = function()
     return {
 
         minimised : true,
-        leftReserve: [],
-        rightReserve:[],
+        pictureReserve : [],
         leftArrow: true,
         rightArrow: true,
 
         initCarousel()
         {
-            this.leftReserve = [];
-            this.rightReserve = [];
+            this.pictureReserve = [];
 
             let width = document.getElementById('carousel_inhalt').clientWidth;
             let firstImage = this.$refs.carousel.querySelector('.element');
@@ -29,7 +27,7 @@ window.carousel = function()
             }
             let nodeList = this.$refs.carousel.querySelectorAll('.element.hidden ');
 
-           nodeList.forEach( item => this.rightReserve.push(item.dataset.marker));
+            nodeList.forEach( item => this.pictureReserve.push(item.dataset.marker));
 
 
         },
@@ -39,21 +37,19 @@ window.carousel = function()
             let visiableImages = this.$refs.carousel.querySelectorAll('.element:not(.hidden) ');
 
             let movedImage = visiableImages[0];
-            if(this.rightReserve.length === 0 ) {
-              this.leftArrow = false;
-                return;
-            }
+
             movedImage.classList.add('hidden');
 
             let markerToHide = movedImage.dataset.marker;
 
-            this.leftReserve.push(markerToHide);
+            this.pictureReserve.unshift(markerToHide);
 
-            let markerToShow = this.rightReserve.shift();
+            let markerToShow = this.pictureReserve.pop();
 
             let imageToShow = this.$refs.carousel.querySelector(`[data-marker="${markerToShow}"]`)
             imageToShow.classList.remove('hidden');
-            this.rightArrow = true;
+
+            document.getElementById('carousel_inhalt').append(imageToShow)
         },
 
         swiperRight()
@@ -62,22 +58,18 @@ window.carousel = function()
 
             let movedImage = visiableImages[visiableImages.length - 1];
 
-            if(this.leftReserve.length === 0 ) {
-                this.rightArrow = false;
-                return;
-            }
-
             movedImage.classList.add('hidden');
 
             let markerToHide = movedImage.dataset.marker;
 
-            this.rightReserve.unshift(markerToHide);
+            this.pictureReserve.push(markerToHide);
 
-            let markerToShow = this.leftReserve.pop();
+            let markerToShow = this.pictureReserve.shift();
 
             let imageToShow = this.$refs.carousel.querySelector(`[data-marker="${markerToShow}"]`)
             imageToShow.classList.remove('hidden');
-            this.leftArrow = true;
+
+            document.getElementById('carousel_inhalt').prepend(imageToShow)
         }
 
     }
@@ -90,19 +82,19 @@ window.carousel = function()
 
 
 
-let container = document.getElementById('carousel_container');
+    let container = document.getElementById('carousel_container');
 
-let listener = SwipeListener(container);
-container.addEventListener('swipe', function (e) {
-    let directions = e.detail.directions;
+    let listener = SwipeListener(container);
+    container.addEventListener('swipe', function (e) {
+        let directions = e.detail.directions;
 
 
-    if (directions.left) {
-        window.dispatchEvent(new CustomEvent('swipe-left'));
-    }
+        if (directions.left) {
+            window.dispatchEvent(new CustomEvent('swipe-left'));
+        }
 
-    if (directions.right) {
-        window.dispatchEvent(new CustomEvent('swipe-right'));
-    }
+        if (directions.right) {
+            window.dispatchEvent(new CustomEvent('swipe-right'));
+        }
 
-});
+    });

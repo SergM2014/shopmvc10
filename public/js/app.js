@@ -3843,15 +3843,13 @@ window.SwipeListener = __webpack_require__(/*! swipe-listener */ "./node_modules
 window.carousel = function () {
   return {
     minimised: true,
-    leftReserve: [],
-    rightReserve: [],
+    pictureReserve: [],
     leftArrow: true,
     rightArrow: true,
     initCarousel: function initCarousel() {
       var _this = this;
 
-      this.leftReserve = [];
-      this.rightReserve = [];
+      this.pictureReserve = [];
       var width = document.getElementById('carousel_inhalt').clientWidth;
       var firstImage = this.$refs.carousel.querySelector('.element');
       var images = this.$refs.carousel.querySelectorAll('.element');
@@ -3868,42 +3866,30 @@ window.carousel = function () {
 
       var nodeList = this.$refs.carousel.querySelectorAll('.element.hidden ');
       nodeList.forEach(function (item) {
-        return _this.rightReserve.push(item.dataset.marker);
+        return _this.pictureReserve.push(item.dataset.marker);
       });
     },
     swiperLeft: function swiperLeft() {
       var visiableImages = this.$refs.carousel.querySelectorAll('.element:not(.hidden) ');
       var movedImage = visiableImages[0];
-
-      if (this.rightReserve.length === 0) {
-        this.leftArrow = false;
-        return;
-      }
-
       movedImage.classList.add('hidden');
       var markerToHide = movedImage.dataset.marker;
-      this.leftReserve.push(markerToHide);
-      var markerToShow = this.rightReserve.shift();
+      this.pictureReserve.unshift(markerToHide);
+      var markerToShow = this.pictureReserve.pop();
       var imageToShow = this.$refs.carousel.querySelector("[data-marker=\"".concat(markerToShow, "\"]"));
       imageToShow.classList.remove('hidden');
-      this.rightArrow = true;
+      document.getElementById('carousel_inhalt').append(imageToShow);
     },
     swiperRight: function swiperRight() {
       var visiableImages = this.$refs.carousel.querySelectorAll('.element:not(.hidden) ');
       var movedImage = visiableImages[visiableImages.length - 1];
-
-      if (this.leftReserve.length === 0) {
-        this.rightArrow = false;
-        return;
-      }
-
       movedImage.classList.add('hidden');
       var markerToHide = movedImage.dataset.marker;
-      this.rightReserve.unshift(markerToHide);
-      var markerToShow = this.leftReserve.pop();
+      this.pictureReserve.push(markerToHide);
+      var markerToShow = this.pictureReserve.shift();
       var imageToShow = this.$refs.carousel.querySelector("[data-marker=\"".concat(markerToShow, "\"]"));
       imageToShow.classList.remove('hidden');
-      this.leftArrow = true;
+      document.getElementById('carousel_inhalt').prepend(imageToShow);
     }
   };
 }; //gesture on screen are added
